@@ -28,6 +28,8 @@
 - **`const int col = 7`**: Number of columns on the board.
 - **`const int row = 6`**: Number of rows on the board.
 - **`int board[row][col]`**: The main board, initialized with the `'-'` character to indicate empty slots.
+- **`const int total_moves`**:Store the total number of moves that can be played
+- **'int current_moves`**:Store the number of moves that have been played
 
 ### Methods:
 
