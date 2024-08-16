@@ -1,50 +1,114 @@
-//In each class all the attributes are private and all the methods are public unless mentioned otherwise
+# Connect 4 Game - Class Structure and Rules
 
-Class Player:
-  Attributes:
-    string name  //store name of player
-    string moves_count  //keep count of user moves. Intially set to zero
-    char item  //store the charactor that will input in board on that player turn
-  Methods:
-    void setName() const
-    string getName() const
-    void incrementMoveCount()
-    string covertToString() const  //this function player data into a string to make writing and reading from file easy
-End Class PLayer
+## Class `Player`
 
-Class Board:
-  Attributes:
-    const int col = 6
-    const int row = 7
-    int board[row][col]  //main board. Initialized to '-' character
-  Methods:
-    int isColumnFree(const int col_number) const    //recieve column number and check whether it is has any empty place or not. Returns the row number if any empty slot is found otherwise returns -1
-    void input(const char to_input,const int row_number, const int col_number)  //reiceve the row number, column number and charactor to input
-    void displayBoard() const    //display board on screen
-    bool leftToRight() const     //check for discs on left and right
-    bool upToDown() const        //check for discs upward and downward
-    bool leftToRightDiognal() const  //check diognally from top right to bottom left
-    bool rightToLeftDiognal() const  //check diognally from boothem right to top left
-End Class Board
+### Attributes:
+- **`string name`**: Stores the name of the player.
+- **`int moves_count`**: Keeps count of the player's moves, initially set to zero.
+- **`char item`**: Stores the character that will be placed on the board during the player's turn.
 
+### Methods:
+- **`void setName()`**: Sets the name of the player.
+- **`string getName() const`**: Returns the name of the player.
+- **`void incrementMoveCount()`**: Increments the player's move count by one.
+- **`string convertToString() const`**: Converts the player's data into a string format, making it easier to write and read from a file.
 
-class Connect4Game:
-  Attributes:
-    Board board
-    Player p1
-    Player p2
-  Methods:
-    private: int toss() const //return result of toss. 0 for player1 and 1 player2
-    void playGame()  //this function contains all the funtunality of game
-    void playerTurn(Player p)  //this function will take input from the player whose turn is this
-    int getUserInput() const   //return user inputted column number
-    void checkUserInput(int user_input) const  //this function make sure that user input is valid
-    void writePLayersData() const  //write data of all player who have played the game
-    void writeWinnerData() const  //write data of all the winners of the game
-    void readPlayersData() const    //read the data in playersData file
-    void readWinnerData() const    //read the data in the winnerData file
-    void rules() const
-    
-    
+---
 
-    
+## Class `Board`
+
+### Attributes:
+- **`const int col = 6`**: Number of columns on the board.
+- **`const int row = 7`**: Number of rows on the board.
+- **`int board[row][col]`**: The main board, initialized with the `'-'` character to indicate empty slots.
+
+### Methods:
+- **`int isColumnFree(const int col_number) const`**: 
+  - Receives a column number and checks if there is any empty space in that column.
+  - Returns the row number of the first empty slot if available; otherwise, returns `-1`.
+
+- **`void input(const char to_input, const int row_number, const int col_number)`**: 
+  - Receives the row number, column number, and the character to input.
+  - Places the character in the specified row and column on the board.
+
+- **`void displayBoard() const`**: Displays the current state of the board on the screen.
+
+- **`bool leftToRight() const`**: Checks for consecutive discs from left to right.
+
+- **`bool upToDown() const`**: Checks for consecutive discs from top to bottom.
+
+- **`bool leftToRightDiagonal() const`**: Checks diagonally from top-left to bottom-right for consecutive discs.
+
+- **`bool rightToLeftDiagonal() const`**: Checks diagonally from bottom-left to top-right for consecutive discs.
+
+---
+
+## Class `Connect4Game`
+
+### Attributes:
+- **`Board board`**: Instance of the `Board` class representing the game board.
+- **`Player p1`**: Instance of the `Player` class representing player 1.
+- **`Player p2`**: Instance of the `Player` class representing player 2.
+
+### Methods:
+
+#### Private Methods:
+- **`int toss() const`**: 
+  - Returns the result of a toss to decide the first player. 
+  - Returns `0` for player 1 and `1` for player 2.
+
+- **`void playGame()`**: 
+  - Contains the main functionality of the game, coordinating the flow of turns and game logic.
+
+- **`void playerTurn(Player p)`**: 
+  - Handles the turn of the player, taking input and updating the board accordingly.
+
+- **`int getUserInput() const`**: 
+  - Prompts the user to input a column number and returns it.
+
+- **`void checkUserInput(int user_input) const`**: 
+  - Validates the user input to ensure it is within the valid range and corresponds to an available column.
+
+- **`void writePlayersData() const`**: 
+  - Writes the data of all players who have participated in the game to a file.
+
+- **`void writeWinnerData() const`**: 
+  - Writes the data of the winners to a separate file.
+
+- **`void readPlayersData() const`**: 
+  - Reads and displays the data of players from the players' data file.
+
+- **`void readWinnerData() const`**: 
+  - Reads and displays the data of winners from the winners' data file.
+
+- **`void rules() const`**: 
+  - Displays the rules of the Connect 4 game in a formatted manner.
+
+---
+
+## Game Rules
+
+1. **Objective**: 
+   - The goal is to connect four of your own discs consecutively in any direction—horizontally, vertically, or diagonally—on the game board.
+
+2. **Starting the Game**:
+   - The game begins with a toss to decide which player will make the first move.
+
+3. **Player Turns**:
+   - Players take turns dropping their discs into any of the seven columns. 
+   - Discs fall to the lowest available position in the column.
+
+4. **Winning the Game**:
+   - A player wins by forming a line of four of their discs consecutively.
+
+5. **Draw**:
+   - If the board is completely filled and no player has connected four discs, the game ends in a draw.
+
+6. **Input Validation**:
+   - The game ensures that all user inputs are valid and within the range of available columns.
+
+7. **Data Management**:
+   - Player data, including names and move counts, is stored and can be read from files.
+   - Winner data is also stored separately for record-keeping.
+
+Enjoy your game!
