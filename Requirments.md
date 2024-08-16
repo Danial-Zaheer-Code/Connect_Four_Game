@@ -11,7 +11,7 @@
 
 ### Methods:
 
-### Public Methods:
+#### Public Methods:
 - **`void setName()`**: Sets the name of the player.
 - **`string getName() const`**: Returns the name of the player.
 - **`void incrementMoveCount()`**: Increments the player's move count by one.
