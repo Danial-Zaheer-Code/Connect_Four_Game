@@ -25,6 +25,5 @@ The goal of Connect 4 is to be the first player to form a horizontal, vertical, 
 
 ## Additional Rules
 - **No Undo**: Once a disc is dropped into a column, the move cannot be undone or changed.
-- **Overtime**: In some variations, if both players agree, the game can continue even after four in a row is achieved to see if the opponent can tie or overtake the winning streak.
 
 Enjoy playing Connect 4!
