@@ -44,13 +44,13 @@
 
 - **`void displayBoard() const`**: Displays the current state of the board on the screen.
 
-- **`bool leftToRight() const`**: Checks for consecutive discs from left to right.
+- **`bool leftToRight(const int row) const`**: Checks for consecutive discs from left to right.
 
-- **`bool upToDown() const`**: Checks for consecutive discs from top to bottom.
+- **`bool upToDown(const int col) const`**: Checks for consecutive discs from top to bottom.
 
-- **`bool leftToRightDiagonal() const`**: Checks diagonally from top-left to bottom-right for consecutive discs.
+- **`bool leftToRightDiagonal(const int row,const int col) const`**: Checks diagonally from top-left to bottom-right for consecutive discs.
 
-- **`bool rightToLeftDiagonal() const`**: Checks diagonally from bottom-left to top-right for consecutive discs.
+- **`bool rightToLeftDiagonal(const int row, const int col) const`**: Checks diagonally from bottom-left to top-right for consecutive discs.
 
 ---
 
