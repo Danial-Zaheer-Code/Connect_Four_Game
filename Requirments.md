@@ -12,8 +12,8 @@
 ### Methods:
 
 #### Public Methods:
-- **`void setName()`**: Sets the name of the player.
 - **`string getName() const`**: Returns the name of the player.
+- **`string getMoveCount() const`**:Returns number of moves of player.
 - **`void incrementMoveCount()`**: Increments the player's move count by one.
 - **`string convertToString() const`**: Converts the player's data into a string format, making it easier to write and read from a file.
 
