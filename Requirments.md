@@ -24,8 +24,8 @@
 ### Attributes:
 
 #### Private:
-- **`const int col = 6`**: Number of columns on the board.
-- **`const int row = 7`**: Number of rows on the board.
+- **`const int col = 7`**: Number of columns on the board.
+- **`const int row = 6`**: Number of rows on the board.
 - **`int board[row][col]`**: The main board, initialized with the `'-'` character to indicate empty slots.
 
 ### Methods:
