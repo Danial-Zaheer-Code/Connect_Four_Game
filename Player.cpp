@@ -1,7 +1,10 @@
 #include "Player.h"
 
 
-
+void Player::setName(const std::string& n)
+{
+	name = n;
+}
 std::string Player::getName() const		//return name of player
 {
 	return name;
