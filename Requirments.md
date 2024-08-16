@@ -3,11 +3,15 @@
 ## Class `Player`
 
 ### Attributes:
+
+#### Private:
 - **`string name`**: Stores the name of the player.
 - **`int moves_count`**: Keeps count of the player's moves, initially set to zero.
 - **`char item`**: Stores the character that will be placed on the board during the player's turn.
 
 ### Methods:
+
+### Public Methods:
 - **`void setName()`**: Sets the name of the player.
 - **`string getName() const`**: Returns the name of the player.
 - **`void incrementMoveCount()`**: Increments the player's move count by one.
@@ -18,11 +22,15 @@
 ## Class `Board`
 
 ### Attributes:
+
+#### Private:
 - **`const int col = 6`**: Number of columns on the board.
 - **`const int row = 7`**: Number of rows on the board.
 - **`int board[row][col]`**: The main board, initialized with the `'-'` character to indicate empty slots.
 
 ### Methods:
+
+#### Public Methods:
 - **`int isColumnFree(const int col_number) const`**: 
   - Receives a column number and checks if there is any empty space in that column.
   - Returns the row number of the first empty slot if available; otherwise, returns `-1`.
@@ -46,19 +54,21 @@
 ## Class `Connect4Game`
 
 ### Attributes:
-- **`Board board`**: Instance of the `Board` class representing the game board.
-- **`Player p1`**: Instance of the `Player` class representing player 1.
-- **`Player p2`**: Instance of the `Player` class representing player 2.
+
+#### Private:
+    - **`Board board`**: Instance of the `Board` class representing the game board.
+    - **`Player p1`**: Instance of the `Player` class representing player 1.
+    - **`Player p2`**: Instance of the `Player` class representing player 2.
 
 ### Methods:
 
+#### Public Methods:
+- **`void playGame()`**: 
+  - Contains the main functionality of the game, coordinating the flow of turns and game logic.
 #### Private Methods:
 - **`int toss() const`**: 
   - Returns the result of a toss to decide the first player. 
   - Returns `0` for player 1 and `1` for player 2.
-
-- **`void playGame()`**: 
-  - Contains the main functionality of the game, coordinating the flow of turns and game logic.
 
 - **`void playerTurn(Player p)`**: 
   - Handles the turn of the player, taking input and updating the board accordingly.
@@ -85,30 +95,3 @@
   - Displays the rules of the Connect 4 game in a formatted manner.
 
 ---
-
-## Game Rules
-
-1. **Objective**: 
-   - The goal is to connect four of your own discs consecutively in any direction—horizontally, vertically, or diagonally—on the game board.
-
-2. **Starting the Game**:
-   - The game begins with a toss to decide which player will make the first move.
-
-3. **Player Turns**:
-   - Players take turns dropping their discs into any of the seven columns. 
-   - Discs fall to the lowest available position in the column.
-
-4. **Winning the Game**:
-   - A player wins by forming a line of four of their discs consecutively.
-
-5. **Draw**:
-   - If the board is completely filled and no player has connected four discs, the game ends in a draw.
-
-6. **Input Validation**:
-   - The game ensures that all user inputs are valid and within the range of available columns.
-
-7. **Data Management**:
-   - Player data, including names and move counts, is stored and can be read from files.
-   - Winner data is also stored separately for record-keeping.
-
-Enjoy your game!
