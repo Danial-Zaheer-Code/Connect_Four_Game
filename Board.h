@@ -29,8 +29,8 @@ public:
 
 	bool leftToRight(const char, const int row) const;	//Checks for consecutive discs from left to right.
 	bool upToDown(const char, const int col) const;		//Checks for consecutive discs from top to bottom.
-	bool topLeftToBottomRight(const int value, const int row, const int col) const;	// Checks diagonally from top - left to bottom - right for consecutive discs.
-	bool bottomLeftToTopRight(const int value, const int row, const int col) const;	//Checks diagonally from bottom - left to top - right for consecutive discs.
+	bool topLeftToBottomRight(const char value, const int row, const int col) const;	// Checks diagonally from top - left to bottom - right for consecutive discs.
+	bool bottomLeftToTopRight(const char value, const int row, const int col) const;	//Checks diagonally from bottom - left to top - right for consecutive discs.
 private:
 	const int cols;
 	const int rows;
@@ -39,5 +39,7 @@ private:
 
 	const int max_moves;		//store total moves that can be played
 	int current_moves;			//store number of moves that have been played
+
+	bool checkLeftDiognal(const char value, const int row, const int col) const;	//check left diognal of board
 };
 

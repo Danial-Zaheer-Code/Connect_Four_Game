@@ -57,16 +57,69 @@ bool Board::upToDown(const char value, const int col) const		//Checks for consec
 			return true;
 	}
 	return false;
-	return false;
 }
-bool Board::topLeftToBottomRight(const int value, const int row, const int col) const	// Checks diagonally from top - left to bottom - right for consecutive discs.
+bool Board::topLeftToBottomRight(const char value, const int row, const int col) const	// Checks diagonally from top - left to bottom - right for consecutive discs.
 {
 	
+	
+	if (!((row > 3 && col < 2) || (row < 2 && col > 4)))
+	{
+		int r = 0;
+		int c = 0;
+		
+		for (int i = 0; i < 4; i++)
+		{
+			c = abs(col - i);
+			if (row == c)
+			{
+				r = row;
+				break;
+			}
 
+			if (i < 3)
+			{
+				r = abs(row - i);
+				if (col == row)
+				{
+					c = col;
+					break;
+				}
+			}
+		}
+		return checkLeftDiognal(value, r, c);
+	}
 	return false;
 }
-bool Board::bottomLeftToTopRight(const int value, const int row, const int col) const	//Checks diagonally from bottom - left to top - right for consecutive discs.
+
+bool Board::checkLeftDiognal(const char value, const int row, const int col) const	//checking left diognal
+{
+	int count = 0;
+	for (int i = row, j = col; i < rows && j < cols; i++,j++)
+	{
+		if (board[i][j] == value)
+			count++;
+		else
+			count = 0;
+
+		if (count == 4)
+			return true;
+	}
+	return false;
+}
+
+
+
+
+bool Board::bottomLeftToTopRight(const char value, const int row, const int col) const	//Checks diagonally from bottom - left to top - right for consecutive discs.
 {
 	
+	if (!((row < 2 && col < 2) || (row > 3 && col > 3)))
+	{
+		for (int i = 6; i > 0; i--)
+		{
+			;
+		}
+	}
+
 	return false;
 }
