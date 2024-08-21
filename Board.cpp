@@ -166,3 +166,8 @@ int Board::getMoves() const
 {
 	return current_moves;
 }
+
+void Board::setMoves()
+{
+	current_moves = 0;
+}

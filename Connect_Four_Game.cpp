@@ -8,6 +8,10 @@ void Connect4Game::rules() const
 		<< "Each player will select the column number. The column number or between 1 and 7.\n"
 		<< "User Have to create 4 consecutive sighn assign to him in any direction.\n"
 		<< "Player1 will have 'X' sign and player 2 will have '0' sign.\n";
+
+	std::cout << "\n\nPress any key to go back: "<<std::endl;
+	std::cin.ignore(1000, '\n');
+	std::cin.get();
 }
 
 
@@ -39,7 +43,7 @@ bool Connect4Game::playerTurn(Player* p)		//this function will be called on each
 	int col = 0, row = 0;	//store the row and column number on which user will input
 	while(1)
 	{
-		std::cout << p->getName() << " turn:\n";
+		std::cout << std::endl << p->getName() << " turn:\n";
 		int col = getUserInput();
 		int row = b.isColumnFree(col-1);
 		if (row == -1)
@@ -53,7 +57,8 @@ bool Connect4Game::playerTurn(Player* p)		//this function will be called on each
 
 			if (checkAllDirection(p->getInputChar(), row, col - 1))		//if any one combination is found
 			{
-				std::cout<<p->getName()<<" Won!\n";
+				b.displayBoard();
+				std::cout << std::endl << p->getName() << " Won!\n";
 				writeWinnerData(p);
 				return 1;
 			}
@@ -76,6 +81,7 @@ void Connect4Game::playGame()
 	std::string name;
 	bool is_combination_found = false;		//it will store one if any player won. Otherwise false
 	//Getting players Name
+	std::cin.ignore(1000, '\n');
 	std::cout << "Enter First Player Name: ";
 	std::getline(std::cin, name);
 	p1.setName(name);
@@ -83,12 +89,14 @@ void Connect4Game::playGame()
 	std::getline(std::cin, name);
 	p2.setName(name);
 
-	std::cin.ignore();
+	std::cout << "\n\n" << p1.getName() << " will start the game\n\n";
+
 	
-	while (b.getMoves() < 42)
+	while (b.getMoves() < 42)	//total moves that can be played are 42
 	{
 		b.displayBoard();
-		if (b.getMoves() % 2 == 0)
+
+		if (b.getMoves() % 2 == 0)	//if move number is divisible by 2 then it is player one turn other wise player two
 		{
 			is_combination_found = playerTurn(&p1);
 		}
@@ -100,6 +108,7 @@ void Connect4Game::playGame()
 		if (is_combination_found)
 		{
 			writePlayerData();
+			b.setMoves();
 			return;
 		}
 		system("cls");
@@ -108,6 +117,7 @@ void Connect4Game::playGame()
 	b.displayBoard();
 	std::cout << "Match is a tie\n";
 	writePlayerData();
+	b.setMoves();
 
 }
 
@@ -116,7 +126,7 @@ void Connect4Game::writeWinnerData(Player* p) const		//write data of winner
 {
 	std::ofstream handler;
 
-	handler.open("Winner_Data.txt");
+	handler.open("Winner_Data.txt",std::ios::app);
 
 	if (!handler.is_open())			//if file is not opened
 	{
@@ -133,7 +143,7 @@ void Connect4Game::writePlayerData() const			//write data of both player
 {
 	std::ofstream handler;
 
-	handler.open("Player_Data.txt");
+	handler.open("Player_Data.txt",std::ios::app);
 
 	if (!handler.is_open())		//if file is not opened
 	{
@@ -160,13 +170,18 @@ void Connect4Game::readWinnerData() const
 	}
 	else
 	{
+		std::cout << "Name   Moves\n";
 		std::string data;
 		while (!handler.eof())
 		{
 			std::getline(handler, data);
 			std::cout << data << "\n";
 		}
+		handler.close();
 	}
+	std::cout << "Press any key to go back: ";
+	std::cin.ignore(1000, '\n');
+	std::cin.get();
 }
 void Connect4Game::readPlayerData() const
 {
@@ -180,11 +195,18 @@ void Connect4Game::readPlayerData() const
 	}
 	else
 	{
+		std::cout << "Name   Moves\n";
 		std::string data;
 		while (!handler.eof())
 		{
 			std::getline(handler, data);
 			std::cout << data << "\n";
 		}
+
+		handler.close();
 	}
+
+	std::cout << "Press any key to go back: ";
+	std::cin.ignore(1000, '\n');
+	std::cin.get();
 }

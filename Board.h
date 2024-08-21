@@ -35,6 +35,7 @@ public:
 
 	void incrementMoves();
 	int getMoves() const;
+	void setMoves();
 private:
 	const int cols;
 	const int rows;
