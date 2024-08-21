@@ -67,26 +67,26 @@ bool Board::topLeftToBottomRight(const char value, const int row, const int col)
 		int r = 0;
 		int c = 0;
 		
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			c = abs(col - i);
-			if (row == c)
+			if (abs(row - i) == col)
 			{
-				r = row;
-				break;
-			}
-
-			if (i < 3)
-			{
-				r = abs(row - i);
-				if (col == row)
-				{
-					c = col;
-					break;
-				}
+				r = i;
+				c = 0;
+				return checkLeftDiognal(value, r, c);
 			}
 		}
-		return checkLeftDiognal(value, r, c);
+
+		for (int i = 1; i < 4; i++)
+		{
+			if (abs(col - i) == row)
+			{
+				r = 0;
+				c = i;
+				return checkLeftDiognal(value, r, c);
+			}
+		}
+		
 	}
 	return false;
 }
@@ -117,13 +117,23 @@ bool Board::bottomLeftToTopRight(const char value, const int row, const int col)
 	{
 		int r = 0;
 		int c = 0;
-		for (int i = 3; i < 6; i++)
+		for (int i = 3; i < 6; i++)		//checking rows at first column
 		{
 			if (abs(i - row) == col)
 			{
 				r = i;
 				c = 0;
-				
+				return checkRightDiognal(value, r, c);
+			}
+		}
+
+		for (int i = 1; i < 4; i++)
+		{
+			if (abs(5 - row) == abs(col - i))
+			{
+				r = 5;
+				c = i;
+				return checkRightDiognal(value, r, c);
 			}
 		}
 	}
@@ -134,8 +144,8 @@ bool Board::bottomLeftToTopRight(const char value, const int row, const int col)
 
 bool Board::checkRightDiognal(const char value, const int row, const int col) const
 {
-	int count;
-	for (int i = row, j = col; i > 0 && j < 7; i--,j--)
+	int count = 0;
+	for (int i = row, j = col; i > 0 && j < 7; i--,j++)
 	{
 		if (board[i][j] == value)
 			count++;
