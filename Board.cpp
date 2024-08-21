@@ -111,14 +111,39 @@ bool Board::checkLeftDiognal(const char value, const int row, const int col) con
 
 
 bool Board::bottomLeftToTopRight(const char value, const int row, const int col) const	//Checks diagonally from bottom - left to top - right for consecutive discs.
-{
+{	
 	
 	if (!((row < 2 && col < 2) || (row > 3 && col > 3)))
 	{
-		for (int i = 6; i > 0; i--)
+		int r = 0;
+		int c = 0;
+		for (int i = 3; i < 6; i++)
 		{
-			;
+			if (abs(i - row) == col)
+			{
+				r = i;
+				c = 0;
+				
+			}
 		}
+	}
+
+	return false;
+}
+
+
+bool Board::checkRightDiognal(const char value, const int row, const int col) const
+{
+	int count;
+	for (int i = row, j = col; i > 0 && j < 7; i--,j--)
+	{
+		if (board[i][j] == value)
+			count++;
+		else
+			count = 0;
+
+		if (count == 4)
+			return true;
 	}
 
 	return false;

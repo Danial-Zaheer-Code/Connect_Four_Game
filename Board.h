@@ -41,5 +41,6 @@ private:
 	int current_moves;			//store number of moves that have been played
 
 	bool checkLeftDiognal(const char value, const int row, const int col) const;	//check left diognal of board
+	bool checkRightDiognal(const char value, const int row, const int col) const;	//check right diognal of board
 };
 
