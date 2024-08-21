@@ -32,6 +32,9 @@ public:
 	bool upToDown(const char, const int col) const;		//Checks for consecutive discs from top to bottom.
 	bool topLeftToBottomRight(const char value, const int row, const int col) const;	// Checks diagonally from top - left to bottom - right for consecutive discs.
 	bool bottomLeftToTopRight(const char value, const int row, const int col) const;	//Checks diagonally from bottom - left to top - right for consecutive discs.
+
+	void incrementMoves();
+	int getMoves() const;
 private:
 	const int cols;
 	const int rows;

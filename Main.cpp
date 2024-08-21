@@ -1,7 +1,8 @@
-#include"Board.h"
+#include"Connect_Four_Game.h"
 
 int main()
 {
-	Board board;
-	board.displayBoard();
+	Connect4Game game;
+	game.playGame();
+
 }

@@ -157,3 +157,12 @@ bool Board::checkRightDiognal(const char value, const int row, const int col) co
 
 	return false;
 }
+
+void Board::incrementMoves()
+{
+	current_moves++;
+}
+int Board::getMoves() const
+{
+	return current_moves;
+}

@@ -11,6 +11,7 @@ public:
 	void setName(const std::string& n);
 	std::string getName() const;		//return name of player
 	int getMovesCount() const;		//return number of moves
+	char getInputChar() const;
 	void incremetMove();			//increment number of moves
 
 	std::string convertToString() const;	//convert the attributes of player object in a single string

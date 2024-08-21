@@ -8,7 +8,7 @@ public:
 	~Connect4Game() {};
 
 	void rules() const; //check rules
-	void playGame();
+	void playGame();			//this function will be called when user want to play the game
 	void readWinnerData() const;
 	void readPlayerData() const;
 private:

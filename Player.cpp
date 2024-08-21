@@ -21,3 +21,9 @@ std::string Player::convertToString() const	//convert the attributes of player o
 {
 	return name +" "+ std::to_string(move_count);
 }
+
+
+char Player::getInputChar() const
+{
+	return input_char;
+}
