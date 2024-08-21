@@ -71,6 +71,16 @@
 #### Public Methods:
 - **`void playGame()`**: 
   - Contains the main functionality of the game, coordinating the flow of turns and game logic.
+ 
+  - **`void readPlayersData() const`**: 
+  - Reads and displays the data of players from the players' data file.
+
+- **`void readWinnerData() const`**: 
+  - Reads and displays the data of winners from the winners' data file.
+
+- **`void rules() const`**: 
+  - Displays the rules of the Connect 4 game in a formatted manner.
+
 #### Private Methods:
 
 - **`void playerTurn(Player* p)`**: 
@@ -87,14 +97,5 @@
 
 - **`void writeWinnerData() const`**: 
   - Writes the data of the winners to a separate file.
-
-- **`void readPlayersData() const`**: 
-  - Reads and displays the data of players from the players' data file.
-
-- **`void readWinnerData() const`**: 
-  - Reads and displays the data of winners from the winners' data file.
-
-- **`void rules() const`**: 
-  - Displays the rules of the Connect 4 game in a formatted manner.
 
 ---
