@@ -1,4 +1,5 @@
 #pragma once
+#include<iostream>
 class Board		//represent the game board
 {
 public:
