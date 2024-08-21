@@ -32,7 +32,10 @@
 - **'int current_moves`**:Store the number of moves that have been played
 
 ### Methods:
+#### Private Methods:
+  - **`bool checkLeftDiognal(const char value, const int row, const int col) const`**:Check right diognal. It will be called by topLeftToBottomRight()
 
+  - **`bool checkRightDiognal(const char value, const int row, const int col) const`**: Check left dioganl. It will be called by bottomLeftToTopRight() function
 #### Public Methods:
 - **`int isColumnFree(const int col_number) const`**: 
   - Receives a column number and checks if there is any empty space in that column.
@@ -48,9 +51,9 @@
 
 - **`bool upToDown(const char value, const int col) const`**: Checks for consecutive discs from top to bottom.
 
-- **`bool leftToRightDiagonal(const char value, const int row,const int col) const`**: Checks diagonally from top-left to bottom-right for consecutive discs.
+- **`bool topLeftToRightBottom(const char value, const int row,const int col) const`**: Checks diagonally from top-left to bottom-right for consecutive discs.
 
-- **`bool rightToLeftDiagonal(const char value, const int row, const int col) const`**: Checks diagonally from bottom-left to top-right for consecutive discs.
+- **`bool bottomLeftToRightTop(const char value, const int row, const int col) const`**: Checks diagonally from bottom-left to top-right for consecutive discs.
 
 ---
 
@@ -69,11 +72,8 @@
 - **`void playGame()`**: 
   - Contains the main functionality of the game, coordinating the flow of turns and game logic.
 #### Private Methods:
-- **`int toss() const`**: 
-  - Returns the result of a toss to decide the first player. 
-  - Returns `0` for player 1 and `1` for player 2.
 
-- **`void playerTurn(Player p)`**: 
+- **`void playerTurn(Player* p)`**: 
   - Handles the turn of the player, taking input and updating the board accordingly.
 
 - **`int getUserInput() const`**: 
