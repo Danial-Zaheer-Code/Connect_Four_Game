@@ -1,4 +1,5 @@
 #pragma once
+#include<fstream>
 #include"Player.h"
 #include"Board.h"
 class Connect4Game
@@ -17,12 +18,14 @@ private:
 
 	Board b;
 
-	void playerTurn(Player* p);		//this function will be called on each player turn
+	bool playerTurn(Player* p);		//this function will be called on each player turn
 
 	void writeWinnerData(Player* p) const;		//write data of winner
 	void writePlayerData() const;			//write data of both player
 
 	int getUserInput() const;				//get column number from user
 	void checkUserInput(int& n) const;		//check the user inputed number
+
+	bool checkAllDirection(const char in, const int row, const int col) const;		//this function will call functions to check every direction 
 };
 
