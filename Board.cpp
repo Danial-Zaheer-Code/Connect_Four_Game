@@ -15,7 +15,7 @@ void Board::input(const char to_input, const int row, const int col)	//put the t
 {
 	board[row][col] = to_input;
 }
-void Board::displayBoard() const
+void Board::displayBoard() const		//diplaying the board;
 {
 	std::cout << "1|2|3|4|5|6|7|\n";
 	for (int i = 0; i < rows; i++)
@@ -25,6 +25,17 @@ void Board::displayBoard() const
 			std::cout << board[i][j] << "|";
 		}
 		std::cout << std::endl;
+	}
+}
+
+void Board::emptyBoard()
+{
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			board[i][j] = '_';
+		}
 	}
 }
 

@@ -111,6 +111,7 @@ void Connect4Game::playGame()
 		{
 			writePlayerData();
 			b.setMoves();
+			b.emptyBoard();
 			return;
 		}
 		system("cls");
@@ -120,6 +121,7 @@ void Connect4Game::playGame()
 	std::cout << "Match is a tie\n";
 	writePlayerData();
 	b.setMoves();
+	b.emptyBoard();
 
 }
 
