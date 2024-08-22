@@ -12,9 +12,10 @@
 ### Methods:
 
 #### Public Methods:
-- **`void getName(const string& n)`**: set the name of the player.
+- **`void setName(const string& n)`**: set the name of the player.
 - **`string getName() const`**: Returns the name of the player.
-- **`string getMoveCount() const`**:Returns number of moves of player.
+- **`int getMoveCount() const`**:Returns number of moves of player.
+- **`char getInputChar() const`**:Returns the input character assigned to user
 - **`void incrementMoveCount()`**: Increments the player's move count by one.
 - **`string convertToString() const`**: Converts the player's data into a string format, making it easier to write and read from a file.
 
@@ -27,8 +28,8 @@
 #### Private:
 - **`const int col = 7`**: Number of columns on the board.
 - **`const int row = 6`**: Number of rows on the board.
-- **`int board[row][col]`**: The main board, initialized with the `'-'` character to indicate empty slots.
-- **`const int total_moves`**:Store the total number of moves that can be played
+- **`int **board`**: The main board, initialized with the `'-'` character to indicate empty slots.
+- **`const int max_moves`**:Store the total number of moves that can be played
 - **'int current_moves`**:Store the number of moves that have been played
 
 ### Methods:
@@ -55,6 +56,11 @@
 
 - **`bool bottomLeftToRightTop(const char value, const int row, const int col) const`**: Checks diagonally from bottom-left to top-right for consecutive discs.
 
+- **`void incrementMoves()`**:increment current_moves count
+
+- **`int getMoves() const`**:return current_moves
+
+- **`void setMoves()`**: set current_moves to zero
 ---
 
 ## Class `Connect4Game`
