@@ -13,7 +13,7 @@ int main()
 			<< "5. Exit\n"
 			<< "Enter your choice: ";
 		choice = std::cin.get();
-
+		system("cls");
 		switch (choice)
 		{
 		case '1':
@@ -37,7 +37,7 @@ int main()
 			std::cout << "\n\nWrong Input\n\n";
 			break;
 		}
-
+		system("cls");
 	}
 
 }

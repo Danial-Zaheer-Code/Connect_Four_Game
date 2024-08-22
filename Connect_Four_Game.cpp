@@ -57,6 +57,7 @@ bool Connect4Game::playerTurn(Player* p)		//this function will be called on each
 
 			if (checkAllDirection(p->getInputChar(), row, col - 1))		//if any one combination is found
 			{
+				system("cls");
 				b.displayBoard();
 				std::cout << std::endl << p->getName() << " Won!\n";
 				writeWinnerData(p);
@@ -89,6 +90,7 @@ void Connect4Game::playGame()
 	std::getline(std::cin, name);
 	p2.setName(name);
 
+	system("cls");
 	std::cout << "\n\n" << p1.getName() << " will start the game\n\n";
 
 	
@@ -206,7 +208,8 @@ void Connect4Game::readPlayerData() const
 		handler.close();
 	}
 
-	std::cout << "Press any key to go back: ";
 	std::cin.ignore(1000, '\n');
+	std::cout << "Press any key to go back: ";
+	
 	std::cin.get();
 }
