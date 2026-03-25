@@ -1,12 +1,15 @@
 /* Game Settings */
 const rows = 6;
 const cols = 7;
-let player1Name = "Player 1";
-let player2Name = "Player 2";
+
+// Instantiate the Player classes (from player.js)
+let player1 = new Player("Player 1", "p1");
+let player2 = new Player("Player 2", "p2");
+
 let currentPlayer = 1;
 let gameActive = false;
 let boardState = [];
-let moveCount = 0;
+let totalMoves = 0;
 
 /* DOM Elements */
 const boardElement = document.getElementById('game-board');
@@ -33,8 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup Buttons
     document.getElementById('back-to-menu-btn').addEventListener('click', () => switchScreen(mainMenuScreen));
     document.getElementById('start-match-btn').addEventListener('click', () => {
-        player1Name = document.getElementById('p1-name').value.trim() || "Player 1";
-        player2Name = document.getElementById('p2-name').value.trim() || "Player 2";
+        player1.setName(document.getElementById('p1-name').value.trim() || "Player 1");
+        player2.setName(document.getElementById('p2-name').value.trim() || "Player 2");
         switchScreen(gameScreen);
         initBoard();
     });
@@ -74,7 +77,12 @@ function initBoard() {
     boardState = Array.from({ length: rows }, () => Array(cols).fill(0));
     currentPlayer = 1;
     gameActive = true;
-    moveCount = 0;
+    totalMoves = 0;
+    
+    // Reset specific player moves tally
+    player1.moves_count = 0;
+    player2.moves_count = 0;
+
     updateTurnUI();
 
     for (let c = 0; c < cols; c++) {
@@ -106,15 +114,19 @@ function handleColumnClick(colIndex) {
     for (let r = rows - 1; r >= 0; r--) {
         if (boardState[r][colIndex] === 0) {
             boardState[r][colIndex] = currentPlayer;
-            moveCount++;
+            totalMoves++;
+            
+            // Log move systematically in player class
+            if (currentPlayer === 1) player1.incrementMoveCount();
+            else player2.incrementMoveCount();
 
             const cell = document.querySelector(`.cell[data-row="${r}"][data-col="${colIndex}"]`);
             const disc = cell.querySelector('.disc');
-            disc.classList.add(currentPlayer === 1 ? 'p1' : 'p2');
+            disc.classList.add(currentPlayer === 1 ? player1.getInputChar() : player2.getInputChar());
 
             if (checkWin(r, colIndex, currentPlayer)) {
-                endGame(currentPlayer === 1 ? player1Name : player2Name);
-            } else if (moveCount === rows * cols) {
+                endGame(currentPlayer === 1 ? player1.getName() : player2.getName());
+            } else if (totalMoves === rows * cols) {
                 endGame("Draw");
             } else {
                 currentPlayer = currentPlayer === 1 ? 2 : 1;
@@ -126,7 +138,7 @@ function handleColumnClick(colIndex) {
 }
 
 function updateTurnUI() {
-    const activeName = currentPlayer === 1 ? player1Name : player2Name;
+    const activeName = currentPlayer === 1 ? player1.getName() : player2.getName();
     turnText.textContent = `${activeName}'s Turn`;
 
     if (currentPlayer === 1) {
@@ -178,45 +190,40 @@ function saveAndDownloadResult(winnerName) {
     const timestamp = new Date().toISOString();
     let resultObj = {
         timestamp: timestamp,
-        player1: player1Name,
-        player2: player2Name,
+        player1: player1.getName(),
+        player2: player2.getName(),
         winner: winnerName === "Draw" ? "None" : winnerName,
-        loser: winnerName === "Draw" ? "None" : (winnerName === player1Name ? player2Name : player1Name),
+        loser: winnerName === "Draw" ? "None" : (winnerName === player1.getName() ? player2.getName() : player1.getName()),
         isDraw: winnerName === "Draw",
-        totalMoves: moveCount
+        totalMoves: totalMoves,
+        p1Moves: player1.getMoveCount(),
+        p2Moves: player2.getMoveCount()
     };
 
-    // Attempt to save to Local Storage as a pure client-side fallback
+    // Attempt to save to Local Storage for "View Results" screen
     let history = [];
     try {
         history = JSON.parse(localStorage.getItem('connect4_history') || '[]');
     } catch (e) { }
+
     history.push(resultObj);
     localStorage.setItem('connect4_history', JSON.stringify(history));
 
-    // SEND TO BACKEND PYTHON SERVER TO NATIVELY APPEND TO JSON!
-    fetch('http://localhost:8000/save_result', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: resultObj })
-    }).then(r => {
-        if(r.ok) console.log('Successfully saved to backend JSON locally!');
-    }).catch(e => {
-        console.warn('Backend not running. Start server.py in backend folder to save identically to disk.');
-    });
+    // DOWNLOAD JSON
+    downloadFile(JSON.stringify(resultObj, null, 4), 'application/json', `connect_4_result_${Date.now()}.json`);
 
-    // Produce fallback text download
+    // DOWNLOAD TXT
     let txtContent = `--- Connect 4 Game Result ---\n`;
     txtContent += `Date: ${new Date().toLocaleString()}\n`;
-    txtContent += `Player 1 (Red): ${player1Name}\n`;
-    txtContent += `Player 2 (Yellow): ${player2Name}\n`;
+    txtContent += `Player 1 (Red): ${player1.convertToString()}\n`;
+    txtContent += `Player 2 (Yellow): ${player2.convertToString()}\n`;
     if (winnerName === "Draw") {
         txtContent += `Result: Draw\n`;
     } else {
         txtContent += `Winner: ${resultObj.winner}\n`;
         txtContent += `Loser: ${resultObj.loser}\n`;
     }
-    txtContent += `Total Moves: ${moveCount}\n`;
+    txtContent += `Total Moves: ${totalMoves}\n`;
     txtContent += `-----------------------------\n`;
 
     downloadFile(txtContent, 'text/plain', `connect_4_result_${Date.now()}.txt`);
@@ -237,61 +244,38 @@ function downloadFile(content, mimeType, filename) {
 function showResultsModal() {
     resultsModal.classList.remove('hidden-modal');
     const resultsList = document.getElementById('results-list');
-    resultsList.innerHTML = '<p style="color:white; text-align:center;">Fetching global history from backend server...</p>';
+    resultsList.innerHTML = '';
 
-    // FETCH FROM BACKEND PYTHON SERVER FIRST (appends natively)!
-    fetch('http://localhost:8000/result.json')
-        .then(res => {
-            if(!res.ok) throw new Error("No backend");
-            return res.json();
-        })
-        .then(history => {
-            renderHistory(history);
-        })
-        .catch(err => {
-            // BACKEND IS OFFLINE -> FALLBACK TO BROWSER CACHE
-            console.warn("Backend not accessible. Showing local browser cache.");
-            let cacheHistory = [];
-            try { cacheHistory = JSON.parse(localStorage.getItem('connect4_history') || '[]'); } catch (e) { }
-            renderHistory(cacheHistory);
-        });
+    let history = [];
+    try {
+        history = JSON.parse(localStorage.getItem('connect4_history') || '[]');
+    } catch (e) { }
 
-    function renderHistory(history) {
-        resultsList.innerHTML = '';
-        if (!Array.isArray(history) || history.length === 0) {
-            resultsList.innerHTML = '<p style="color:white; text-align:center;">No matches played yet.</p>';
-            return;
-        }
-
-        // Display from newest to oldest
-        history.slice().reverse().forEach(match => {
-            const item = document.createElement('div');
-            item.classList.add('result-item');
-
-            let displayStr = `<span class="result-tag">Time:</span> ${new Date(match.timestamp).toLocaleString()}<br>`;
-            displayStr += `<span class="result-tag">Match:</span> ${match.player1} vs ${match.player2}<br>`;
-
-            if (match.isDraw) {
-                displayStr += `<span class="result-tag">Outcome:</span> <span style="color:#fbbf24; font-weight:bold;">Draw</span><br>`;
-            } else {
-                displayStr += `<span class="result-tag">Outcome:</span> Winner: <span class="result-winner">${match.winner}</span> | Loser: ${match.loser}<br>`;
-            }
-            displayStr += `<span class="result-tag">Moves:</span> ${match.totalMoves}`;
-            item.innerHTML = displayStr;
-            resultsList.appendChild(item);
-        });
+    if (history.length === 0) {
+        resultsList.innerHTML = '<p style="color:white; text-align:center;">No matches played yet.</p>';
+        return;
     }
+
+    // Display from newest to oldest
+    history.slice().reverse().forEach(match => {
+        const item = document.createElement('div');
+        item.classList.add('result-item');
+
+        let displayStr = `<span class="result-tag">Time:</span> ${new Date(match.timestamp).toLocaleString()}<br>`;
+        displayStr += `<span class="result-tag">Match:</span> ${match.player1} vs ${match.player2}<br>`;
+
+        if (match.isDraw) {
+            displayStr += `<span class="result-tag">Outcome:</span> <span style="color:#fbbf24; font-weight:bold;">Draw</span><br>`;
+        } else {
+            displayStr += `<span class="result-tag">Outcome:</span> Winner: <span class="result-winner">${match.winner}</span> | Loser: ${match.loser}<br>`;
+        }
+        displayStr += `<span class="result-tag">Moves:</span> ${match.totalMoves}`;
+        item.innerHTML = displayStr;
+        resultsList.appendChild(item);
+    });
 }
 
 function downloadAllHistoryJson() {
-    // Attempt download globally from backend or purely from cache
-    fetch('http://localhost:8000/result.json')
-        .then(r => r.json())
-        .then(history => {
-            downloadFile(JSON.stringify(history, null, 4), 'application/json', `connect_4_global_history_${Date.now()}.json`);
-        })
-        .catch(e => {
-            let history = localStorage.getItem('connect4_history') || '[]';
-            downloadFile(history, 'application/json', `connect_4_fallback_history_${Date.now()}.json`);
-        });
+    let history = localStorage.getItem('connect4_history') || '[]';
+    downloadFile(history, 'application/json', `connect_4_full_history_${Date.now()}.json`);
 }
