@@ -7,7 +7,7 @@ function saveAndDownloadResult(winnerName) {
         winner: winnerName === "Draw" ? "None" : winnerName,
         loser: winnerName === "Draw" ? "None" : (winnerName === player1.getName() ? player2.getName() : player1.getName()),
         isDraw: winnerName === "Draw",
-        totalMoves: totalMoves,
+        totalMoves: gameBoard.getMoves(), // Retrieved dynamically from board class
         p1Moves: player1.getMoveCount(),
         p2Moves: player2.getMoveCount()
     };
@@ -35,7 +35,7 @@ function saveAndDownloadResult(winnerName) {
         txtContent += `Winner: ${resultObj.winner}\n`;
         txtContent += `Loser: ${resultObj.loser}\n`;
     }
-    txtContent += `Total Moves: ${totalMoves}\n`;
+    txtContent += `Total Moves: ${gameBoard.getMoves()}\n`; // Pulled intelligently
     txtContent += `-----------------------------\n`;
 
     downloadFile(txtContent, 'text/plain', `connect_4_result_${Date.now()}.txt`);
