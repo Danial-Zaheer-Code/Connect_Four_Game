@@ -27,9 +27,26 @@
             </div>
         </main>
         
+        <!-- Start Modal (asks for names) -->
+        <div id="start-modal" class="modal">
+            <div class="modal-content">
+                <h2 id="win-message" style="margin-bottom: 2rem; font-size: 2.5rem; text-shadow: 0 0 20px rgba(255,255,255,0.2);">Welcome to Connect Four</h2>
+                <div class="input-group">
+                    <label for="p1-name">Player 1 (Red)</label>
+                    <input type="text" id="p1-name" placeholder="Enter Name" value="Player 1">
+                </div>
+                <div class="input-group">
+                    <label for="p2-name">Player 2 (Yellow)</label>
+                    <input type="text" id="p2-name" placeholder="Enter Name" value="Player 2">
+                </div>
+                <button id="start-btn" class="modern-btn primary" style="width: 100%; margin-top: 1rem;">Start Match</button>
+            </div>
+        </div>
+
+        <!-- Win/Draw Modal -->
         <div id="win-modal" class="modal hidden">
             <div class="modal-content">
-                <h2 id="win-message">Player 1 Wins!</h2>
+                <h2 id="end-message">Player 1 Wins!</h2>
                 <button id="play-again-btn" class="modern-btn primary">Play Again</button>
             </div>
         </div>
