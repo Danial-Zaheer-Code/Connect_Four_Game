@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Four</title>
+    <meta name="description" content="A modern, web-based Connect Four game.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- MAIN MENU -->
+    <div id="main-menu" class="screen active-screen">
+        <div class="menu-container">
+            <h1 class="main-title">Connect Four</h1>
+            <div class="menu-buttons">
+                <button id="menu-play-btn" class="modern-btn primary large-btn">Play Game</button>
+                <button id="menu-results-btn" class="modern-btn large-btn">View Results</button>
+                <button id="menu-credits-btn" class="modern-btn large-btn">Credits</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYER SETUP -->
+    <div id="name-input-screen" class="screen hidden-screen">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 2rem; font-size: 2.5rem; text-shadow: 0 0 20px rgba(255,255,255,0.2);">Player
+                Setup</h2>
+            <div class="input-group">
+                <label for="p1-name">Player 1 (Red)</label>
+                <input type="text" id="p1-name" placeholder="Enter Name" value="Player 1">
+            </div>
+            <div class="input-group">
+                <label for="p2-name">Player 2 (Yellow)</label>
+                <input type="text" id="p2-name" placeholder="Enter Name" value="Player 2">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+                <button id="back-to-menu-btn" class="modern-btn" style="flex: 1;">Back</button>
+                <button id="start-match-btn" class="modern-btn primary" style="flex: 2;">Start Match</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen hidden-screen">
+        <div class="game-container">
+            <header>
+                <h1>Connect Four</h1>
+                <div class="status-panel">
+                    <div class="player-turn active red-turn" id="turn-indicator">
+                        <span class="disc-indicator"></span>
+                        <h2 id="turn-text">Player 1's Turn</h2>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="reset-btn" class="modern-btn">Restart</button>
+                        <button id="quit-btn" class="modern-btn">Quit</button>
+                    </div>
+                </div>
+            </header>
+
+            <main class="board-wrapper">
+                <div id="game-board" class="game-board">
+                    <!-- Columns and cells dynamically generated -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- RESULTS MODAL -->
+    <div id="results-modal" class="modal hidden-modal">
+        <div class="modal-content results-content">
+            <h2>Match History</h2>
+            <div id="results-list" class="results-list">
+                <!-- Results populated dynamically -->
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: center; margin-top: 1rem;">
+                <button id="download-all-results-btn" class="modern-btn primary">Download All (JSON)</button>
+                <button id="close-results-btn" class="modern-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CREDITS MODAL -->
+    <div id="credits-modal" class="modal hidden-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 1.5rem;">Credits</h2>
+            <p style="margin-bottom: 20px; line-height: 1.6; color: rgba(255,255,255,0.8); text-align: left;">
+                <strong>Connect Four Game</strong><br><br>
+                Abdulrahman Nisar<br>
+                Muhammad Danial Zaheer<br>
+                Abdullah Habib<br>
+
+            </p>
+            <button id="close-credits-btn" class="modern-btn primary" style="width: 100%;">Close</button>
+        </div>
+    </div>
+
+    <!-- WIN MODAL -->
+    <div id="win-modal" class="modal hidden-modal">
+        <div class="modal-content">
+            <h2 id="end-message">Player 1 Wins!</h2>
+            <p style="margin-bottom: 1.5rem; color: #94a3b8;">Match stored sequentially in History & JSON Downloads.</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="play-again-btn" class="modern-btn primary">Play Again</button>
+                <button id="win-menu-btn" class="modern-btn">Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../backend/board.js"></script>
+    <script src="../backend/player.js"></script>
+    <script src="../backend/storage.js"></script>
+    <script src="../backend/app.js"></script>
+</body>
+
+</html>
