@@ -186,19 +186,26 @@ function saveAndDownloadResult(winnerName) {
         totalMoves: moveCount
     };
 
-    // Attempt to save to Local Storage for "View Results" screen
+    // Attempt to save to Local Storage as a pure client-side fallback
     let history = [];
     try {
         history = JSON.parse(localStorage.getItem('connect4_history') || '[]');
     } catch (e) { }
-
     history.push(resultObj);
     localStorage.setItem('connect4_history', JSON.stringify(history));
 
-    // DOWNLOAD JSON
-    downloadFile(JSON.stringify(resultObj, null, 4), 'application/json', `connect_4_result_${Date.now()}.json`);
+    // SEND TO BACKEND PYTHON SERVER TO NATIVELY APPEND TO JSON!
+    fetch('http://localhost:8000/save_result', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: resultObj })
+    }).then(r => {
+        if(r.ok) console.log('Successfully saved to backend JSON locally!');
+    }).catch(e => {
+        console.warn('Backend not running. Start server.py in backend folder to save identically to disk.');
+    });
 
-    // DOWNLOAD TXT
+    // Produce fallback text download
     let txtContent = `--- Connect 4 Game Result ---\n`;
     txtContent += `Date: ${new Date().toLocaleString()}\n`;
     txtContent += `Player 1 (Red): ${player1Name}\n`;
@@ -230,38 +237,61 @@ function downloadFile(content, mimeType, filename) {
 function showResultsModal() {
     resultsModal.classList.remove('hidden-modal');
     const resultsList = document.getElementById('results-list');
-    resultsList.innerHTML = '';
+    resultsList.innerHTML = '<p style="color:white; text-align:center;">Fetching global history from backend server...</p>';
 
-    let history = [];
-    try {
-        history = JSON.parse(localStorage.getItem('connect4_history') || '[]');
-    } catch (e) { }
+    // FETCH FROM BACKEND PYTHON SERVER FIRST (appends natively)!
+    fetch('http://localhost:8000/result.json')
+        .then(res => {
+            if(!res.ok) throw new Error("No backend");
+            return res.json();
+        })
+        .then(history => {
+            renderHistory(history);
+        })
+        .catch(err => {
+            // BACKEND IS OFFLINE -> FALLBACK TO BROWSER CACHE
+            console.warn("Backend not accessible. Showing local browser cache.");
+            let cacheHistory = [];
+            try { cacheHistory = JSON.parse(localStorage.getItem('connect4_history') || '[]'); } catch (e) { }
+            renderHistory(cacheHistory);
+        });
 
-    if (history.length === 0) {
-        resultsList.innerHTML = '<p style="color:white; text-align:center;">No matches played yet.</p>';
-        return;
-    }
-
-    // Display from newest to oldest
-    history.slice().reverse().forEach(match => {
-        const item = document.createElement('div');
-        item.classList.add('result-item');
-
-        let displayStr = `<span class="result-tag">Time:</span> ${new Date(match.timestamp).toLocaleString()}<br>`;
-        displayStr += `<span class="result-tag">Match:</span> ${match.player1} vs ${match.player2}<br>`;
-
-        if (match.isDraw) {
-            displayStr += `<span class="result-tag">Outcome:</span> <span style="color:#fbbf24; font-weight:bold;">Draw</span><br>`;
-        } else {
-            displayStr += `<span class="result-tag">Outcome:</span> Winner: <span class="result-winner">${match.winner}</span> | Loser: ${match.loser}<br>`;
+    function renderHistory(history) {
+        resultsList.innerHTML = '';
+        if (!Array.isArray(history) || history.length === 0) {
+            resultsList.innerHTML = '<p style="color:white; text-align:center;">No matches played yet.</p>';
+            return;
         }
-        displayStr += `<span class="result-tag">Moves:</span> ${match.totalMoves}`;
-        item.innerHTML = displayStr;
-        resultsList.appendChild(item);
-    });
+
+        // Display from newest to oldest
+        history.slice().reverse().forEach(match => {
+            const item = document.createElement('div');
+            item.classList.add('result-item');
+
+            let displayStr = `<span class="result-tag">Time:</span> ${new Date(match.timestamp).toLocaleString()}<br>`;
+            displayStr += `<span class="result-tag">Match:</span> ${match.player1} vs ${match.player2}<br>`;
+
+            if (match.isDraw) {
+                displayStr += `<span class="result-tag">Outcome:</span> <span style="color:#fbbf24; font-weight:bold;">Draw</span><br>`;
+            } else {
+                displayStr += `<span class="result-tag">Outcome:</span> Winner: <span class="result-winner">${match.winner}</span> | Loser: ${match.loser}<br>`;
+            }
+            displayStr += `<span class="result-tag">Moves:</span> ${match.totalMoves}`;
+            item.innerHTML = displayStr;
+            resultsList.appendChild(item);
+        });
+    }
 }
 
 function downloadAllHistoryJson() {
-    let history = localStorage.getItem('connect4_history') || '[]';
-    downloadFile(history, 'application/json', `connect_4_full_history_${Date.now()}.json`);
+    // Attempt download globally from backend or purely from cache
+    fetch('http://localhost:8000/result.json')
+        .then(r => r.json())
+        .then(history => {
+            downloadFile(JSON.stringify(history, null, 4), 'application/json', `connect_4_global_history_${Date.now()}.json`);
+        })
+        .catch(e => {
+            let history = localStorage.getItem('connect4_history') || '[]';
+            downloadFile(history, 'application/json', `connect_4_fallback_history_${Date.now()}.json`);
+        });
 }
